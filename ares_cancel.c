@@ -30,6 +30,11 @@ void ares_cancel(ares_channel channel)
   struct list_node* list_node;
   int i;
 
+  if (channel->flags & ARES_FLAG_CANCELLING)
+  {
+    return; /* Already being cancelled */
+  }
+  channel->flags |= ARES_FLAG_CANCELLING;
   list_head = &(channel->all_queries);
   for (list_node = list_head->next; list_node != list_head; )
   {
@@ -60,4 +65,5 @@ void ares_cancel(ares_channel channel)
         ares__close_sockets(channel, &channel->servers[i]);
     }
   }
+  channel->flags &= ~ARES_FLAG_CANCELLING;
 }

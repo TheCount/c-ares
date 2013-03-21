@@ -95,6 +95,12 @@ void ares_gethostbyname(ares_channel channel, const char *name, int family,
     return;
   }
 
+  if (channel->flags & ARES_FLAG_CANCELLING)
+    {
+      callback(arg, ARES_ECANCELLED, 0, NULL);
+      return;
+    }
+
   if (fake_hostent(name, family, callback, arg))
     return;
 

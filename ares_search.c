@@ -54,6 +54,12 @@ void ares_search(ares_channel channel, const char *name, int dnsclass,
   const char *p;
   int status, ndots;
 
+  if (channel->flags & ARES_FLAG_CANCELLING)
+    {
+      callback(arg, ARES_ECANCELLED, 0, NULL, 0);
+      return;
+    }
+
   /* If name only yields one domain to search, then we don't have
    * to keep extra state, so just do an ares_query().
    */

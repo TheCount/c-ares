@@ -140,6 +140,7 @@ extern "C" {
 #define ARES_FLAG_NOALIASES     (1 << 6)
 #define ARES_FLAG_NOCHECKRESP   (1 << 7)
 #define ARES_FLAG_EDNS          (1 << 8)
+/* #define ARES_FLAG_CANCELLING    (1 << 9) */ /* defined in ares_private.h */
 
 /* Option mask values */
 #define ARES_OPT_FLAGS          (1 << 0)

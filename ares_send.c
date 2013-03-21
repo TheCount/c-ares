@@ -39,6 +39,12 @@ void ares_send(ares_channel channel, const unsigned char *qbuf, int qlen,
   int i, packetsz;
   struct timeval now;
 
+  if (channel->flags & ARES_FLAG_CANCELLING)
+    {
+      callback(arg, ARES_ECANCELLED, 0, NULL, 0);
+      return;
+    }
+
   /* Verify that the query is at least long enough to hold the header. */
   if (qlen < HFIXEDSZ || qlen >= (1 << 16))
     {

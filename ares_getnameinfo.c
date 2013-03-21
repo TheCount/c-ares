@@ -88,6 +88,12 @@ void ares_getnameinfo(ares_channel channel, const struct sockaddr *sa,
   struct nameinfo_query *niquery;
   unsigned int port = 0;
 
+  if (channel->flags & ARES_FLAG_CANCELLING)
+    {
+      callback(arg, ARES_ECANCELLED, 0, NULL, NULL);
+      return;
+    }
+
   /* Validate socket address family and length */
   if ((sa->sa_family == AF_INET) &&
       (salen == sizeof(struct sockaddr_in)))

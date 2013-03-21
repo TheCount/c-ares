@@ -66,6 +66,12 @@ void ares_gethostbyaddr(ares_channel channel, const void *addr, int addrlen,
 {
   struct addr_query *aquery;
 
+  if (channel->flags & ARES_FLAG_CANCELLING)
+    {
+      callback(arg, ARES_ECANCELLED, 0, NULL);
+      return;
+    }
+
   if (family != AF_INET && family != AF_INET6)
     {
       callback(arg, ARES_ENOTIMP, 0, NULL);

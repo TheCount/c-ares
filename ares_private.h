@@ -113,6 +113,9 @@
 #define EDNSFIXEDSZ    11    /* Size of EDNS header */
 /********* EDNS defines section ******/
 
+#define ARES_FLAG_CANCELLING (1 << 9) /* flag indicating all requests
+                                         being cancelled on a channel */
+
 struct ares_addr {
   int family;
   union {

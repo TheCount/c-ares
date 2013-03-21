@@ -115,6 +115,12 @@ void ares_query(ares_channel channel, const char *name, int dnsclass,
   unsigned char *qbuf;
   int qlen, rd, status;
 
+  if (channel->flags & ARES_FLAG_CANCELLING)
+    {
+      callback(arg, ARES_ECANCELLED, 0, NULL, 0);
+      return;
+    }
+
   /* Compose the query. */
   rd = !(channel->flags & ARES_FLAG_NORECURSE);
   status = ares_create_query(name, dnsclass, type, channel->next_id, rd, &qbuf,
